@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="/static/style.css">
+
+<div class="navbar">
+    Mentor Dashboard - {{user}}
+</div>
+
+<div class="container">
+
+    <!-- Assign Task Section -->
+    <div class="card">
+        <h3>Assign Task</h3>
+
+        <form method="POST">
+            <input type="text" name="mentee" placeholder="Enter Mentee Name" required>
+            <input type="text" name="task" placeholder="Enter Task" required>
+            <button type="submit">Add Task</button>
+        </form>
+    </div>
+
+    <!-- Task List Section -->
+    <div class="card">
+        <h3>Your Assigned Tasks</h3>
+
+        {% if tasks|length == 0 %}
+            <p>No tasks assigned yet.</p>
+        {% else %}
+            {% for t in tasks %}
+                <div class="task-card">
+                    <b>Mentee:</b> {{t[0]}} <br>
+                    <b>Task:</b> {{t[1]}} <br>
+                    <b>Status:</b> {{t[2]}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- Logout -->
+    <div style="margin-top:20px; text-align:center;">
+        <a href="/" style="color:lightblue; font-weight:bold;">Logout</a>
+    </div>
+
+</div>

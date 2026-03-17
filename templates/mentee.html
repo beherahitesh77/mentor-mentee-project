@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="/static/style.css">
+
+<div class="navbar">Mentee Dashboard - {{user}}</div>
+
+<div class="container">
+
+<div class="card">
+<h3>Your Tasks</h3>
+<link rel="stylesheet" href="/static/style.css">
+
+<div class="navbar">Mentee Dashboard - {{user}}</div>
+
+<div class="container">
+
+<div class="card">
+<h3>Your Tasks</h3>
+
+{% for t in tasks %}
+    <div class="task-card">
+        {{t[0]}} - {{t[1]}}
+
+        {% if t[1] == 'pending' %}
+        <a href="/done?task={{t[0]}}&user={{user}}" style="color:lightgreen;">Done</a>
+        {% endif %}
+    </div>
+{% endfor %}
+
+</div>
+
+</div>
+
+{% for t in tasks %}
+    <p>
+        {{t[0]}} - {{t[1]}}
+        {% if t[1] == 'pending' %}
+        <a href="/done?task={{t[0]}}&user={{user}}">Done</a>
+        {% endif %}
+    </p>
+{% endfor %}
+
+</div>
+
+</div>

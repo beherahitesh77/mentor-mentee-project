@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="/static/style.css">
+
+<div class="navbar">Chat with {{other}}</div>
+
+<div class="container">
+
+<div class="card">
+{% for m in messages %}
+    <p><b>{{m[0]}}:</b> {{m[1]}}</p>
+{% endfor %}
+</div>
+<link rel="stylesheet" href="/static/style.css">
+
+<div class="navbar">Chat with {{other}}</div>
+
+<div class="container">
+
+<div class="card">
+{% for m in messages %}
+    <div class="task-card">
+        <b>{{m[0]}}:</b> {{m[1]}}
+    </div>
+{% endfor %}
+</div>
+
+<div class="card">
+<form method="POST">
+    <input name="msg" placeholder="Type message">
+    <button>Send</button>
+</form>
+</div>
+
+</div>
+
+<div class="card">
+<form method="POST">
+    <input name="msg" placeholder="Type message">
+    <button>Send</button>
+</form>
+</div>
+
+</div>

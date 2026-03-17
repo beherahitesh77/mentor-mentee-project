@@ -1,0 +1,103 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
+
+    background: linear-gradient(135deg, #667eea, #764ba2, #6dd5ed);
+    
+    color: white;
+}
+
+/* CENTER EVERYTHING */
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+select {
+    background: rgba(255,255,255,0.2);
+    color: white;
+}
+
+/* FIX DROPDOWN OPTIONS */
+select option {
+    color: black;      /* visible text */
+    background: white; /* proper background */
+}
+/* GLASS CARD */
+.card {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 25px rgba(0,0,0,0.5);
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+}   
+
+/* INPUT FIELDS */
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+
+    background: rgba(255,255,255,0.25);  /* slightly brighter */
+    color: white;
+    font-size: 14px;
+}
+
+/* IMPORTANT: Placeholder fix */
+input::placeholder {
+    color: rgba(255,255,255,0.8);
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #a855f7, #06b6d4, #22c55e);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* NAVBAR */
+.navbar {
+    background: rgba(0,0,0,0.4);
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* CONTAINER */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* TASK CARD */
+.task-card {
+    background: rgba(255,255,255,0.15);
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.task-card:hover {
+    background: rgba(255,255,255,0.25);
+}
