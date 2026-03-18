@@ -2,45 +2,22 @@ from flask import Flask, render_template, request, redirect
 import sqlite3
 
 app = Flask(__name__)
-import os
-
-DB_PATH = "/data/database.db"
-
-# fallback if /data not available (local run)
-if not os.path.exists("/data"):
-    DB_PATH = "database.db"
-
-conn = sqlite3.connect(DB_PATH)
 
 # ---------------- DB ----------------
 def create_db():
-    import os
-
-    DB_PATH = "/data/database.db"
-    if not os.path.exists("/data"):
-        DB_PATH = "database.db"
-
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect('database.db')
     c = conn.cursor()
 
     c.execute("CREATE TABLE IF NOT EXISTS users (name TEXT, role TEXT)")
+    
+    # Added points column
     c.execute("""CREATE TABLE IF NOT EXISTS tasks (
-        mentor TEXT,
-        mentee TEXT,
-        task TEXT,
-        status TEXT,
-        points INTEGER DEFAULT 0
-    )""")
-
-    c.execute("CREATE TABLE IF NOT EXISTS messages (sender TEXT, receiver TEXT, msg TEXT)")
-
-    conn.commit()
-    conn.close()
-    # ADD COLUMN IF NOT EXISTS (IMPORTANT)
-    try:
-        c.execute("ALTER TABLE tasks ADD COLUMN points INTEGER DEFAULT 0")
-    except:
-        pass
+                mentor TEXT, 
+                mentee TEXT, 
+                task TEXT, 
+                status TEXT,
+                points INTEGER
+                )""")
 
     c.execute("CREATE TABLE IF NOT EXISTS messages (sender TEXT, receiver TEXT, msg TEXT)")
 
@@ -56,7 +33,7 @@ def login():
         name = request.form['name'].lower()
         role = request.form['role']
 
-        conn = sqlite3.connect('/data/database.db')
+        conn = sqlite3.connect('database.db')
         c = conn.cursor()
         c.execute("INSERT INTO users VALUES (?, ?)", (name, role))
         conn.commit()
@@ -75,7 +52,7 @@ def login():
 def mentor():
     user = request.args.get('user').lower()
 
-    conn = sqlite3.connect('/data/database.db')
+    conn = sqlite3.connect('database.db')
     c = conn.cursor()
 
     # Assign task
@@ -105,7 +82,7 @@ def mentor():
 def mentee():
     user = request.args.get('user').lower()
 
-    conn = sqlite3.connect('/data/database.db')
+    conn = sqlite3.connect('database.db')
     c = conn.cursor()
 
     c.execute("SELECT task, status, points FROM tasks WHERE mentee=?", (user,))
@@ -129,7 +106,7 @@ def done():
     task = request.args.get('task')
     user = request.args.get('user').lower()
 
-    conn = sqlite3.connect('/data/database.db')
+    conn = sqlite3.connect('database.db')
     c = conn.cursor()
 
     # update status + give 10 points
@@ -147,7 +124,7 @@ def chat():
     user = request.args.get('user').lower()
     other = request.args.get('other').lower()
 
-    conn = sqlite3.connect('/data/database.db')
+    conn = sqlite3.connect('database.db')
     c = conn.cursor()
 
     if request.method == 'POST':
