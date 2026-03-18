@@ -33,6 +33,15 @@
             {% endfor %}
         {% endif %}
     </div>
+    <div class="card">
+    <h3>Mentee Points (Leaderboard)</h3>
+
+    {% for l in leaderboard %}
+        <div class="task-card">
+            {{l[0]}} → {{l[1]}} points
+        </div>
+    {% endfor %}
+</div>
 
     <!-- Logout -->
     <div style="margin-top:20px; text-align:center;">

@@ -1,68 +1,81 @@
+/* BODY BACKGROUND */
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    height: 100vh;
-
     background: linear-gradient(135deg, #667eea, #764ba2, #6dd5ed);
-    
     color: white;
 }
 
-/* CENTER EVERYTHING */
+/* NAVBAR */
+.navbar {
+    background: rgba(0,0,0,0.4);
+    padding: 15px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    backdrop-filter: blur(10px);
+}
+
+/* CENTER LOGIN */
 .center {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-}
-select {
-    background: rgba(255,255,255,0.2);
-    color: white;
+    height: 90vh;
 }
 
-/* FIX DROPDOWN OPTIONS */
-select option {
-    color: black;      /* visible text */
-    background: white; /* proper background */
+/* MAIN CONTAINER */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
 }
-/* GLASS CARD */
+
+/* CARD DESIGN */
 .card {
-    background: rgba(255, 255, 255, 0.08);
-    padding: 30px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 20px;
+    margin: 15px 0;
     border-radius: 15px;
     backdrop-filter: blur(10px);
-    box-shadow: 0 0 25px rgba(0,0,0,0.5);
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
     width: 400px;
     max-width: 90%;
     text-align: center;
-}   
+}
 
-/* INPUT FIELDS */
+/* INPUT + SELECT */
 input, select {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin: 10px 0;
     border: none;
     border-radius: 8px;
-
-    background: rgba(255,255,255,0.25);  /* slightly brighter */
+    background: rgba(255,255,255,0.25);
     color: white;
     font-size: 14px;
 }
 
-/* IMPORTANT: Placeholder fix */
+/* FIX PLACEHOLDER */
 input::placeholder {
     color: rgba(255,255,255,0.8);
+}
+
+/* DROPDOWN OPTIONS */
+select option {
+    background: white;
+    color: black;
 }
 
 /* BUTTON */
 button {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin-top: 10px;
     border: none;
     border-radius: 8px;
-    background: linear-gradient(90deg, #a855f7, #06b6d4, #22c55e);
+    background: linear-gradient(90deg, #ff7e5f, #feb47b);
     color: white;
     font-weight: bold;
     cursor: pointer;
@@ -71,33 +84,56 @@ button {
 
 button:hover {
     transform: scale(1.05);
-}
-
-/* NAVBAR */
-.navbar {
-    background: rgba(0,0,0,0.4);
-    padding: 15px;
-    text-align: center;
-    font-size: 18px;
-}
-
-/* CONTAINER */
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
+    background: linear-gradient(90deg, #ff512f, #dd2476);
 }
 
 /* TASK CARD */
 .task-card {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.18);
     padding: 12px;
-    margin: 8px 0;
-    border-radius: 8px;
+    margin: 10px 0;
+    border-radius: 10px;
+    text-align: left;
     transition: 0.3s;
 }
 
 .task-card:hover {
-    background: rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.28);
+}
+
+/* POINTS DISPLAY (VERY IMPORTANT) */
+.card h3 {
+    margin-bottom: 10px;
+}
+
+/* LEADERBOARD STYLE */
+.task-card b {
+    color: #ffd700; /* gold color */
+}
+
+/* LINKS */
+a {
+    color: #00ffcc;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* SCROLL FIX FOR MANY TASKS */
+.card {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* CUSTOM SCROLLBAR */
+.card::-webkit-scrollbar {
+    width: 5px;
+}
+
+.card::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
 }

@@ -9,7 +9,16 @@ def create_db():
     c = conn.cursor()
 
     c.execute("CREATE TABLE IF NOT EXISTS users (name TEXT, role TEXT)")
-    c.execute("CREATE TABLE IF NOT EXISTS tasks (mentor TEXT, mentee TEXT, task TEXT, status TEXT)")
+    
+    # Added points column
+    c.execute("""CREATE TABLE IF NOT EXISTS tasks (
+                mentor TEXT, 
+                mentee TEXT, 
+                task TEXT, 
+                status TEXT,
+                points INTEGER
+                )""")
+
     c.execute("CREATE TABLE IF NOT EXISTS messages (sender TEXT, receiver TEXT, msg TEXT)")
 
     conn.commit()
@@ -21,7 +30,7 @@ create_db()
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        name = request.form['name']
+        name = request.form['name'].lower()
         role = request.form['role']
 
         conn = sqlite3.connect('database.db')
@@ -41,50 +50,68 @@ def login():
 # ---------------- MENTOR DASHBOARD ----------------
 @app.route('/mentor', methods=['GET', 'POST'])
 def mentor():
-    user = request.args.get('user')
+    user = request.args.get('user').lower()
 
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
 
+    # Assign task
     if request.method == 'POST':
-        mentee = request.form['mentee']
+        mentee = request.form['mentee'].lower()
         task = request.form['task']
-        c.execute("INSERT INTO tasks VALUES (?, ?, ?, ?)", (user, mentee, task, 'pending'))
+
+        c.execute("INSERT INTO tasks VALUES (?, ?, ?, ?, ?)", 
+                  (user, mentee, task, 'pending', 0))
         conn.commit()
 
-    c.execute("SELECT mentee, task, status FROM tasks WHERE mentor=?", (user,))
+    # Get tasks
+    c.execute("SELECT mentee, task, status, points FROM tasks WHERE mentor=?", (user,))
     tasks = c.fetchall()
+
+    # Get points per mentee
+    c.execute("SELECT mentee, SUM(points) FROM tasks WHERE mentor=? GROUP BY mentee", (user,))
+    leaderboard = c.fetchall()
 
     conn.close()
 
-    return render_template('mentor.html', user=user, tasks=tasks)
+    return render_template('mentor.html', user=user, tasks=tasks, leaderboard=leaderboard)
 
 
 # ---------------- MENTEE DASHBOARD ----------------
 @app.route('/mentee')
 def mentee():
-    user = request.args.get('user')
+    user = request.args.get('user').lower()
 
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
 
-    c.execute("SELECT task, status FROM tasks WHERE mentee=?", (user,))
+    c.execute("SELECT task, status, points FROM tasks WHERE mentee=?", (user,))
     tasks = c.fetchall()
+
+    # total points
+    c.execute("SELECT SUM(points) FROM tasks WHERE mentee=?", (user,))
+    total_points = c.fetchone()[0]
+
+    if total_points is None:
+        total_points = 0
 
     conn.close()
 
-    return render_template('mentee.html', user=user, tasks=tasks)
+    return render_template('mentee.html', user=user, tasks=tasks, total_points=total_points)
 
 
 # ---------------- MARK DONE ----------------
 @app.route('/done')
 def done():
     task = request.args.get('task')
-    user = request.args.get('user')
+    user = request.args.get('user').lower()
 
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
-    c.execute("UPDATE tasks SET status='done' WHERE task=? AND mentee=?", (task, user))
+
+    # update status + give 10 points
+    c.execute("UPDATE tasks SET status='done', points=10 WHERE task=? AND mentee=?", (task, user))
+
     conn.commit()
     conn.close()
 
@@ -94,8 +121,8 @@ def done():
 # ---------------- CHAT ----------------
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
-    user = request.args.get('user')
-    other = request.args.get('other')
+    user = request.args.get('user').lower()
+    other = request.args.get('other').lower()
 
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
@@ -105,8 +132,11 @@ def chat():
         c.execute("INSERT INTO messages VALUES (?, ?, ?)", (user, other, msg))
         conn.commit()
 
-    c.execute("SELECT sender, msg FROM messages WHERE (sender=? AND receiver=?) OR (sender=? AND receiver=?)",
+    c.execute("""SELECT sender, msg FROM messages 
+                 WHERE (sender=? AND receiver=?) 
+                 OR (sender=? AND receiver=?)""",
               (user, other, other, user))
+
     messages = c.fetchall()
 
     conn.close()
@@ -120,4 +150,3 @@ import os
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-    
