@@ -5,6 +5,9 @@ body {
     background: linear-gradient(135deg, #667eea, #764ba2, #6dd5ed);
     color: white;
 }
+* {
+    box-sizing: border-box;
+}
 
 /* NAVBAR */
 .navbar {
@@ -50,11 +53,11 @@ input, select {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
-    border: none;
     border-radius: 8px;
+    border: none;
+
     background: rgba(255,255,255,0.25);
     color: white;
-    font-size: 14px;
 }
 
 /* FIX PLACEHOLDER */
