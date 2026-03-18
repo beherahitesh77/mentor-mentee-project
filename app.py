@@ -10,14 +10,19 @@ def create_db():
 
     c.execute("CREATE TABLE IF NOT EXISTS users (name TEXT, role TEXT)")
     
-    # Added points column
     c.execute("""CREATE TABLE IF NOT EXISTS tasks (
-                mentor TEXT, 
-                mentee TEXT, 
-                task TEXT, 
-                status TEXT,
-                points INTEGER
-                )""")
+        mentor TEXT,
+        mentee TEXT,
+        task TEXT,
+        status TEXT,
+        points INTEGER DEFAULT 0
+    )""")
+
+    # ADD COLUMN IF NOT EXISTS (IMPORTANT)
+    try:
+        c.execute("ALTER TABLE tasks ADD COLUMN points INTEGER DEFAULT 0")
+    except:
+        pass
 
     c.execute("CREATE TABLE IF NOT EXISTS messages (sender TEXT, receiver TEXT, msg TEXT)")
 
