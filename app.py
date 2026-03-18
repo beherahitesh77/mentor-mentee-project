@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # ---------------- DB ----------------
 def create_db():
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('/data/database.db')
     c = conn.cursor()
 
     c.execute("CREATE TABLE IF NOT EXISTS users (name TEXT, role TEXT)")
@@ -38,7 +38,7 @@ def login():
         name = request.form['name'].lower()
         role = request.form['role']
 
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect('/data/database.db')
         c = conn.cursor()
         c.execute("INSERT INTO users VALUES (?, ?)", (name, role))
         conn.commit()
@@ -57,7 +57,7 @@ def login():
 def mentor():
     user = request.args.get('user').lower()
 
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('/data/database.db')
     c = conn.cursor()
 
     # Assign task
@@ -87,7 +87,7 @@ def mentor():
 def mentee():
     user = request.args.get('user').lower()
 
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('/data/database.db')
     c = conn.cursor()
 
     c.execute("SELECT task, status, points FROM tasks WHERE mentee=?", (user,))
@@ -111,7 +111,7 @@ def done():
     task = request.args.get('task')
     user = request.args.get('user').lower()
 
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('/data/database.db')
     c = conn.cursor()
 
     # update status + give 10 points
@@ -129,7 +129,7 @@ def chat():
     user = request.args.get('user').lower()
     other = request.args.get('other').lower()
 
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('/data/database.db')
     c = conn.cursor()
 
     if request.method == 'POST':
