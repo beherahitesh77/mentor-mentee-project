@@ -2,14 +2,28 @@ from flask import Flask, render_template, request, redirect
 import sqlite3
 
 app = Flask(__name__)
+import os
+
+DB_PATH = "/data/database.db"
+
+# fallback if /data not available (local run)
+if not os.path.exists("/data"):
+    DB_PATH = "database.db"
+
+conn = sqlite3.connect(DB_PATH)
 
 # ---------------- DB ----------------
 def create_db():
-    conn = sqlite3.connect('/data/database.db')
+    import os
+
+    DB_PATH = "/data/database.db"
+    if not os.path.exists("/data"):
+        DB_PATH = "database.db"
+
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
 
     c.execute("CREATE TABLE IF NOT EXISTS users (name TEXT, role TEXT)")
-    
     c.execute("""CREATE TABLE IF NOT EXISTS tasks (
         mentor TEXT,
         mentee TEXT,
@@ -18,6 +32,10 @@ def create_db():
         points INTEGER DEFAULT 0
     )""")
 
+    c.execute("CREATE TABLE IF NOT EXISTS messages (sender TEXT, receiver TEXT, msg TEXT)")
+
+    conn.commit()
+    conn.close()
     # ADD COLUMN IF NOT EXISTS (IMPORTANT)
     try:
         c.execute("ALTER TABLE tasks ADD COLUMN points INTEGER DEFAULT 0")
